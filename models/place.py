@@ -1,9 +1,12 @@
 #!/usr/bin/python3
 """This is the place class"""
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, Table, Float, MetaData
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
+
+metadata = Base.metadata
+
 
 class Place(BaseModel, Base):
     """This is the class for Place
@@ -32,3 +35,12 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=False)
     longitude = Column(Float, nullable=False)
     amenity_ids = relationship('Amenity', secondary='place_amenity', viewonly=False)
+    place_amenity = Table('place_amenity', metadata,
+                          Column('place_id', 
+                                 String(60), 
+                                 ForeignKey('place.id'),
+                                 nullable=False)
+                          Column('amenity_id', 
+                                 String(60),
+                                 ForeignKey('amenities.id'),
+                                 nullable=False))
