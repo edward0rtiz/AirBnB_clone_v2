@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """This is the console for AirBnB"""
 import cmd
-from models import storage
 from datetime import datetime
 from models.base_model import BaseModel
 from models.user import User
@@ -11,6 +10,7 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 from shlex import split
+from models import storage
 
 
 class HBNBCommand(cmd.Cmd):
@@ -30,7 +30,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_EOF(self, line):
         """Quit command to exit the program at end of file"""
-        print()
+        print("")
         return True
 
     def do_create(self, line):
@@ -63,6 +63,7 @@ class HBNBCommand(cmd.Cmd):
                 storage.new(obj)
             print(obj.id)
             obj.save()
+
         except SyntaxError:
             print("** class name missing **")
         except NameError:
@@ -139,11 +140,10 @@ class HBNBCommand(cmd.Cmd):
         """objects = storage.all()
         my_list = []"""
 
-        obj = storage.all()
         if not line:
+            obj = storage.all()
             print([obj[key].__str__() for key in obj])
             return
-
         try:
             args = line.split(" ")
             if args[0] not in self.__classes:
