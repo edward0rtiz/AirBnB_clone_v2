@@ -136,21 +136,22 @@ class HBNBCommand(cmd.Cmd):
         Exceptions:
             NameError: when there is no object taht has the name
         """
-        objects = storage.all()
-        my_list = []
+        """objects = storage.all()
+        my_list = []"""
+
+        obj = storage.all()
         if not line:
-            for key in objects:
-                my_list.append(objects[key])
-            print(my_list)
+            print([obj[key].__str__() for key in obj])
             return
+
         try:
             args = line.split(" ")
             if args[0] not in self.__classes:
                 raise NameError()
 
-            ob = storage.all(eval(args[0]))
-            print([ob[key].__str__() for key in ob])
-            
+            obj = storage.all(eval(args[0]))
+            print([obj[key].__str__() for key in obj])
+
         except NameError:
             print("** class doesn't exist **")
 
