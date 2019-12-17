@@ -20,11 +20,20 @@ class FileStorage:
     __file_path = "file.json"
     __objects = {}
 
-    def all(self):
+    def all(self, cls=None):
         """returns a dictionary
         Return:
             returns a dictionary of __object
         """
+        if cls is not None:
+            if type(cls) == str:
+                cls = eval(cls)
+
+            class_dict = {}
+            for key, val in self.__objects.items():
+                if type(val) == cls:
+                    class_dict[key] = val
+            return class_dict
         return self.__objects
 
     def new(self, obj):
@@ -32,9 +41,7 @@ class FileStorage:
         Args:
             obj: given object
         """
-        if obj:
-            key = "{}.{}".format(type(obj).__name__, obj.id)
-            self.__objects[key] = obj
+        self.__objects["{}.{}".format(type(obj).__name__, obj.id)] = obj
 
     def save(self):
         """serialize the file path to JSON file path
@@ -54,4 +61,10 @@ class FileStorage:
                     value = eval(value["__class__"])(**value)
                     self.__objects[key] = value
         except FileNotFoundError:
+            pass
+
+    def delete(self, obj=None):
+        try:
+            del self.__objects["{}.{}".format(type(obj).__name__, obj.id)]
+        except (AttributeError, KeyError):
             pass
