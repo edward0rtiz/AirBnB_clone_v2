@@ -28,7 +28,6 @@ class FileStorage:
         if cls is not None:
             if type(cls) == str:
                 cls = eval(cls)
-
             class_dict = {}
             for key, val in self.__objects.items():
                 if type(val) == cls:
@@ -63,6 +62,8 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
+        """Delete object from self objects if exists
+        """
         try:
             del self.__objects["{}.{}".format(type(obj).__name__, obj.id)]
         except (AttributeError, KeyError):
