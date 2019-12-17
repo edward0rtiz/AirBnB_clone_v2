@@ -1,14 +1,20 @@
 #!/usr/bin/python3
 """This is the base model class for AirBnB"""
-import uuid
+from uuid import uuid4
 import models
 from datetime import datetime
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String, ForeignKey
 
+Base = declarative_base()
 
-class BaseModel:
+class BaseModel(Base):
     """This class will defines all common attributes/methods
     for other classes
     """
+    id = Column(String(60), primary_key=True, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
+    updated_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
 
     def __init__(self, *args, **kwargs):
         """Instantiation of base model class
