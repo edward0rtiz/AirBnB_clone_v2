@@ -27,18 +27,17 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        print(cls)
-        print(type(cls))
 
         if cls is None:
-            objs = self.__session.query(User, State, City, Amenity,
-                                        Place, Review).all()
+            objs = self.__session.query(State).all()
+            objs.extend(self.__session.query(User).all())
+            objs.extend(self.__session.query(Place).all())
+            objs.extend(self.__session.query(Amenity).all())
+            objs.extend(self.__session.query(City).all())
+            objs.extend(self.__session.query(Review).all())
         else:
             objs = self.__session.query(cls)
-        objs_dict = {}
-        for ob in objs:
-            objs_dict["{}.{}".format(type(ob).__name__, ob.id)] = ob
-        return objs_dict
+        return {"{}.{}".format(type(ob).__name__, obj.id): ob for ob in objs}
 
     def new(self, obj):
         self.__session.add(obj)
@@ -55,3 +54,6 @@ class DBStorage:
         session_m = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(session_m)
         self.__session = Session()
+
+    def close(self):
+        self.__session.close()
