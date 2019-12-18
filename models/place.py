@@ -9,17 +9,7 @@ from models.review import Review
 from sqlalchemy.ext.declarative import declarative_base
 import models
 ​
-metadata = Base.metadata
-​
-place_amenity = Table('place_amenity', metadata,
-                      Column('place_id',
-                             String(60),
-                             ForeignKey('places.id'),
-                             primary_key=True, nullable=False),
-                      Column('amenity_id',
-                             String(60),
-                             ForeignKey('amenities.id'),
-                             primary_key=True, nullable=False))
+metadata = Base.metadata​
 ​
 ​
 class Place(BaseModel, Base):
@@ -49,5 +39,15 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, nullable=False, default=0)
     latitude = Column(Float)
     longitude = Column(Float)
-    amenity_ids = []
+    amenity_ids = relationship('Amenity', secondary='place_amenitiy', 
+                               viewonly=False)
 ​
+    place_amenity = Table('place_amenity', metadata,
+                          Column('place_id',
+                                 String(60),
+                                 ForeignKey('places.id'),
+                                 primary_key=True, nullable=False),
+                          Column('amenity_id',
+                                 String(60),
+                                 ForeignKey('amenities.id'),
+                                 primary_key=True, nullable=False))
