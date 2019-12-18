@@ -5,19 +5,22 @@ from models.city import City
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 import models
-from os import getenv
-
-
+import os
+​
+​
+​
 class State(BaseModel, Base):
     """This is the class for State
     Attributes:
         name: input name
     """
+    HBNB_TYPE_STORAGE = os.getenv('HBNB_TYPE_STORAGE')
+​
     __tablename__ = 'states'
     name = Column(String(128), nullable=False)
     cities = relationship('City', backref='state', cascade='delete')
-
-    if ("HBNB_TYPE_STORAGE", None) is None:
+​
+    if (HBNB_TYPE_STORAGE, None) is None:
         @property
         def cities(self):
             Clist = []
