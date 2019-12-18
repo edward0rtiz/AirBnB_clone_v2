@@ -8,6 +8,15 @@ import models
 
 
 metadata = Base.metadata
+place_amenity = Table('place_amenity', metadata,
+                      Column('place_id', 
+                             String(60), 
+                             ForeignKey('places.id'), 
+                             primary_key=True, nullable=False), 
+                      Column('amenity_id', 
+                             String(60), 
+                             ForeignKey('amenities.id'), 
+                             primary_key=True, nullable=False))
 
 
 class Place(BaseModel, Base):
@@ -38,12 +47,3 @@ class Place(BaseModel, Base):
     longitude = Column(Float, nullable=False)
     amenity_ids = relationship('Amenity', secondary='place_amenity',
                                viewonly=False)
-    place_amenity = Table('place_amenity', metadata,
-                          Column('place_id',
-                                 String(60),
-                                 ForeignKey('places.id'),
-                                 primary_key=True, nullable=False),
-                          Column('amenity_id',
-                                 String(60),
-                                 ForeignKey('amenities.id'),
-                                 primary_key=True, nullable=False))
