@@ -4,18 +4,14 @@ from models.base_model import Base, BaseModel
 from models.city import City
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
-import models
-import os
-​
+import models​
 ​
 ​
 class State(BaseModel, Base):
     """This is the class for State
     Attributes:
         name: input name
-    """
-    HBNB_TYPE_STORAGE = os.getenv('HBNB_TYPE_STORAGE')
-​
+    """​
     __tablename__ = 'states'
     name = Column(String(128), nullable=False)
     cities = relationship('City', backref='state', cascade='delete')
