@@ -14,8 +14,8 @@ class BaseModel:
     for other classes
     """
     id = Column(String(60), primary_key=True, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
-    updated_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
 
     def __init__(self, *args, **kwargs):
         """Instantiation of base model class
@@ -43,12 +43,7 @@ class BaseModel:
         """
         dic = self.__dict__.copy()
         dic.pop("_sa_instance_state", None)
-        return "[{}] ({}) {}".format(
-            type(self).__name__, self.id, dic)
-
-    """def __repr__(self):
-        return a string representaion
-    return self.__str__()"""
+        return "[{}] ({}) {}".format(type(self).__name__, self.id, dic)
 
     def save(self):
         """updates the public instance attribute updated_at to current

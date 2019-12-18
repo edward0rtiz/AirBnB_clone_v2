@@ -17,8 +17,8 @@ class HBNBCommand(cmd.Cmd):
     """this class is entry point of the command interpreter
     """
     prompt = "(hbnb) "
-    __classes = {"BaseModel", "User", "City", "State",
-                   "Amenity", "Place", "Review"}
+    __classes = {"BaseModel", "User", "City", "State", "Amenity", "Place",
+                 "Review"}
 
     def emptyline(self):
         """Ignores empty spaces"""
