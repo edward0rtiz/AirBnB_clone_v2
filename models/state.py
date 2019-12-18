@@ -6,9 +6,9 @@ from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 import models
 import os
-​
-​
-​
+
+
+
 class State(BaseModel, Base):
     """This is the class for State
     Attributes:

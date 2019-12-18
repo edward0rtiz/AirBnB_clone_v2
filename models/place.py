@@ -9,9 +9,9 @@ from models.review import Review
 from sqlalchemy.ext.declarative import declarative_base
 import os
 import models
-​
+
 metadata = Base.metadata
-​
+
 place_amenity = Table('place_amenity', metadata,
                       Column('place_id',
                              String(60),
