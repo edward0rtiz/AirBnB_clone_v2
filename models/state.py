@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""This is the state class"""
+"""This is the state class."""
 from models.base_model import Base, BaseModel
 from models.city import City
 from sqlalchemy import Column, String
