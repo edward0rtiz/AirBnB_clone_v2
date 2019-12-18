@@ -2,7 +2,7 @@
 """This is the place class."""
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlalchemy import Table, Float
+from sqlalchemy import Table, Float, MetaData
 from sqlalchemy.orm import relationship
 from models.amenity import Amenity
 from models.review import Review
@@ -39,7 +39,7 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, nullable=False, default=0)
     latitude = Column(Float)
     longitude = Column(Float)
-    amenity_ids = relationship('Amenity', secondary='place_amenitiy', 
+    amenity_ids = relationship('Amenity', secondary='place_amenity', 
                                viewonly=False)
 
     place_amenity = Table('place_amenity', metadata,
