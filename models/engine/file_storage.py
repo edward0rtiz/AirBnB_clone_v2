@@ -20,11 +20,19 @@ class FileStorage:
     __file_path = "file.json"
     __objects = {}
 
-    def all(self):
+    def all(self, cls=None):
         """returns a dictionary
         Return:
             returns a dictionary of __object
         """
+        if cls is not None:
+            if type(cls) == str:
+                cls = eval(cls)
+            class_dict = {}
+            for key, val in self.__objects.items():
+                if type(val) == cls:
+                    class_dict[key] = val
+            return class_dict
         return self.__objects
 
     def new(self, obj):
@@ -32,26 +40,31 @@ class FileStorage:
         Args:
             obj: given object
         """
-        if obj:
-            key = "{}.{}".format(type(obj).__name__, obj.id)
-            self.__objects[key] = obj
+        self.__objects["{}.{}".format(type(obj).__name__, obj.id)] = obj
 
     def save(self):
         """serialize the file path to JSON file path
         """
-        my_dict = {}
-        for key, value in self.__objects.items():
-            my_dict[key] = value.to_dict()
+        obj_dict = {obj: self.__objects[obj].to_dict() for obj in self.__objects.keys()}
         with open(self.__file_path, 'w', encoding="UTF-8") as f:
-            json.dump(my_dict, f)
+            json.dump(obj_dict, f)
 
     def reload(self):
         """serialize the file path to JSON file path
         """
         try:
             with open(self.__file_path, 'r', encoding="UTF-8") as f:
-                for key, value in (json.load(f)).items():
-                    value = eval(value["__class__"])(**value)
-                    self.__objects[key] = value
+                for obj in json.load(f).values():
+                    name = obj["__class__"]
+                    del obj["__class__"]
+                    self.new(eval(name)(**obj))
         except FileNotFoundError:
+            pass
+
+    def delete(self, obj=None):
+        """Delete object from self objects if exists
+        """
+        try:
+            del self.__objects["{}.{}".format(type(obj).__name__, obj.id)]
+        except (AttributeError, KeyError):
             pass
