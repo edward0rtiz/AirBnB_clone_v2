@@ -8,10 +8,10 @@ from models.amenity import Amenity
 from models.review import Review
 from sqlalchemy.ext.declarative import declarative_base
 import models
-​
-metadata = Base.metadata​
-​
-​
+
+metadata = Base.metadata
+
+
 class Place(BaseModel, Base):
     """This is the class for Place
     Attributes:
@@ -41,7 +41,7 @@ class Place(BaseModel, Base):
     longitude = Column(Float)
     amenity_ids = relationship('Amenity', secondary='place_amenitiy', 
                                viewonly=False)
-​
+
     place_amenity = Table('place_amenity', metadata,
                           Column('place_id',
                                  String(60),
