@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""This is the city class"""
+"""This is the city class."""
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy import ForeignKey
@@ -15,5 +15,5 @@ class City(BaseModel, Base):
     __tablename__ = 'cities'
     name = Column(String(128), nullable=False)
     state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
-    places = relationship('Place',
-                          backref='cities', cascade='all, delete-orphan')
+    places = relationship('Place', backref='cities',
+                          cascade='all, delete-orphan')
