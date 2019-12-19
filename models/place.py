@@ -27,7 +27,7 @@ class Place(BaseModel, Base):
         longitude: longitude in float
         amenity_ids: list of Amenity ids
     """
-    
+
     __tablename__ = 'places'
     city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
     user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
@@ -39,7 +39,7 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, nullable=False, default=0)
     latitude = Column(Float)
     longitude = Column(Float)
-    amenity_ids = relationship('Amenity', secondary='place_amenity', 
+    amenity_ids = relationship('Amenity', secondary='place_amenity',
                                viewonly=False)
 
     place_amenity = Table('place_amenity', metadata,
