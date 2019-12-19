@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""This is the user class"""
+"""This is the user class."""
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
@@ -19,6 +19,6 @@ class User(BaseModel, Base):
     first_name = Column(String(128))
     last_name = Column(String(128))
     reviews = relationship('Review', backref='user',
-                           cascade='delete, delete-orphan')
+                           cascade='delete')
     places = relationship('Place', backref='user',
-                          cascade='delete, delete-orphan')
+                          cascade='delete')
