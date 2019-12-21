@@ -12,8 +12,6 @@ from sqlalchemy.orm import sessionmaker, relationship, scoped_session
 import os
 
 
-
-
 class DBStorage:
     __engine = None
     __session = None
@@ -49,7 +47,8 @@ class DBStorage:
             objs.extend(self.__session.query(Review).all())
         else:
             objs = self.__session.query(cls)
-        return {"{}.{}".format(type(obj).__name__, obj.id): obj for obj in objs}
+        return {"{}.{}".format(type(obj).__name__, obj.id): obj
+                for obj in objs}
 
     def new(self, obj):
         self.__session.add(obj)
