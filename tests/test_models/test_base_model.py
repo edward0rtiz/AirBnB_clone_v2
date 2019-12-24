@@ -4,6 +4,8 @@ import unittest
 import os
 from models.base_model import BaseModel
 import pep8
+from models.engine.file_storage import FileStorage
+from datetime import datetime
 
 
 class TestBaseModel(unittest.TestCase):
@@ -12,21 +14,26 @@ class TestBaseModel(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """setup for the test"""
+        try:
+            os.rename("file.json", "tmp")
+        except IOError:
+            pass
+        FileStorage._FileStorage__objects = {}
+        cls.storage = FileStorage()
         cls.base = BaseModel()
-        cls.base.name = "Kev"
-        cls.base.num = 20
 
     @classmethod
     def teardown(cls):
         """at the end of the test this will tear it down"""
-        del cls.base
-
-    def tearDown(self):
-        """teardown"""
         try:
             os.remove("file.json")
-        except Exception:
+        except IOError:
             pass
+        try:
+            os.rename("tmp", "file.json")
+        except IOError:
+            pass
+        del cls.storage
 
     def test_pep8_BaseModel(self):
         """Testing for pep8"""
@@ -41,21 +48,41 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsNotNone(BaseModel.__str__.__doc__)
         self.assertIsNotNone(BaseModel.save.__doc__)
         self.assertIsNotNone(BaseModel.to_dict.__doc__)
+        self.assertIsNotNone(BaseModel.delete.__doc__)
 
     def test_method_BaseModel(self):
         """chekcing if Basemodel have methods"""
         self.assertTrue(hasattr(BaseModel, "__init__"))
         self.assertTrue(hasattr(BaseModel, "save"))
         self.assertTrue(hasattr(BaseModel, "to_dict"))
+        self.assertTrue(hasattr(BaseModel, "__str__"))
+        self.assertTrue(hasattr(BaseModel, "delete"))
 
     def test_init_BaseModel(self):
         """test if the base is an type BaseModel"""
         self.assertTrue(isinstance(self.base, BaseModel))
 
+    def test_kwargs(self):
+        """Test initialization with args and kwargs."""
+        date = datetime.utcnow()
+        BModel = BaseModel("1", id="3", created_at=date.isoformat())
+        self.assertEqual(BModel.id, "3")
+        self.assertEqual(BModel.created_at, date)
+
+    @unittest.skipIf(os.getenv("HBNB_ENV") is not None, "Test DBS")
     def test_save_BaesModel(self):
         """test if the save works"""
+        prev = self.base.updated_at
         self.base.save()
+        self.assertLess(prev, self.base.updated_at)
+        with open("file.json", "r") as f:
+            self.assertIn("BaseModel.{}".format(self.base.id), f.read())
         self.assertNotEqual(self.base.created_at, self.base.updated_at)
+
+    @unittest.skipIf(os.getenv("HBNB_ENV") is not None, "Test DBS")
+    def test_delete(self):
+        self.base.delete()
+        self.assertNotIn(self.base, FileStorage._FileStorage__objects)
 
     def test_to_dict_BaseModel(self):
         """test if dictionary works"""
