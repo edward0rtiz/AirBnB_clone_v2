@@ -13,12 +13,12 @@ def do_deploy(archive_path):
         return False
 
     try:
-        config = archive_path.split("/")[-1]
-        ndir = ("/data/web_static/releases" + config.split(".")[0])
+        nconfig = archive_path.split("/")[-1]
+        ndir = ("/data/web_static/releases/" + nconfig.split(".")[0])
         put(archive_path, "/tmp/")
         run("sudo mkdir -p {}".format(ndir))
-        run("sudo tar -xzf /tmp/{} -C {}".format(config, ndir))
-        run("sudo rm /tmp/{}".format(config))
+        run("sudo tar -xzf /tmp/{} -C {}".format(nconfig, ndir))
+        run("sudo rm /tmp/{}".format(nconfig))
         run("sudo mv {}/web_static/* {}/".format(ndir, ndir))
         run("sudo rm -rf {}/web_static".format(ndir))
         run("sudo rm -rf /data/web_static/current")
