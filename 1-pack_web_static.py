@@ -1,7 +1,7 @@
-#!/usr/bin/python 3
+#!/usr/bin/python3
 """Fabric script that generates a .tgz archive"""
 
-from fabric.api import local
+from fabric.api import *
 import time
 
 def do_pack():
