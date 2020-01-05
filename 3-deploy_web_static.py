@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 """ test file """
 import os.path
-from fabric.api import local
-from fabric.operations import run, put, sudo
 import time
+from fabric.operations import run, put, sudo
+from fabric.api import *
 env.hosts = ['35.185.103.0', '35.237.21.105']
 
 
