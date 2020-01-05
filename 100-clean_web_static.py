@@ -52,7 +52,7 @@ def do_clean(number=0):
     number = 1 if int(number) == 0 else int(number)
 
     files = sorted(os.listdir("versions"))
-    [archives.pop() for i in range(number)]
+    [files.pop() for i in range(number)]
     with lcd("versions"):
         [local("rm ./{}".format(j) for j in files)]
 
