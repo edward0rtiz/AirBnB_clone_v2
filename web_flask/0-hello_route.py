@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""Initial script for undesrtand flask"""
 
 from flask import Flask
 
