@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
-from flask import Flask, render_template
 from models import storage
+from flask import Flask, render_template
 
 app = Flask('web_flask')
 
