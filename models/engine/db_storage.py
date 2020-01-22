@@ -46,6 +46,8 @@ class DBStorage:
             objs.extend(self.__session.query(City).all())
             objs.extend(self.__session.query(Review).all())
         else:
+            if type(cls) == str:
+                cls = eval(cls)
             objs = self.__session.query(cls)
         return {"{}.{}".format(type(obj).__name__, obj.id): obj
                 for obj in objs}
@@ -65,3 +67,7 @@ class DBStorage:
         sess = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(sess)
         self.__session = Session()
+
+    def close(self):
+        """Close SQLAlchemy session."""
+        self.__session.close()
